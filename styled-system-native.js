@@ -2,34 +2,6 @@ import React from "react";
 import { Dimensions } from "react-native";
 import ThemeContext from "./theme-context";
 
-export const systemize = (Component, ...styleProviders) => {
-  return ({ style: userStyle, ...rest }) => (
-    <ThemeContext.Consumer>
-      {theme => {
-        //return (theme = defaultTheme) => {
-        // pipe the {style, props} object through each function
-        // which each takes just the props it needs
-        // the final object returned from reduce
-        // represents the total style and unused props
-        const { style, props } = styleProviders.reduce(
-          ({ style, props }, styleFn) => {
-            const { style: newStyle, props: unusedProps } = styleFn(
-              theme,
-              props
-            );
-            return { style: { ...style, ...newStyle }, props: unusedProps };
-          },
-          { style: {}, props: rest }
-        );
-
-        console.log(style, props);
-
-        return <Component style={[style, userStyle]} {...props} />;
-      }}
-    </ThemeContext.Consumer>
-  );
-};
-
 const { width, height } = Dimensions.get("screen");
 
 const dimensionsSelect = breakPoints => {
@@ -101,4 +73,32 @@ export const spaces = (
     },
     props: rest
   };
+};
+
+export const systemize = (Component, ...styleProviders) => {
+  return ({ style: userStyle, ...rest }) => (
+    <ThemeContext.Consumer>
+      {theme => {
+        //return (theme = defaultTheme) => {
+        // pipe the {style, props} object through each function
+        // which each takes just the props it needs
+        // the final object returned from reduce
+        // represents the total style and unused props
+        const { style, props } = styleProviders.reduce(
+          ({ style, props }, styleFn) => {
+            const { style: newStyle, props: unusedProps } = styleFn(
+              theme,
+              props
+            );
+            return { style: { ...style, ...newStyle }, props: unusedProps };
+          },
+          { style: {}, props: rest }
+        );
+
+        console.log(style, props);
+
+        return <Component style={[style, userStyle]} {...props} />;
+      }}
+    </ThemeContext.Consumer>
+  );
 };
