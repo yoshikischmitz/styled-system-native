@@ -24,6 +24,11 @@ export const color = (theme, { color: colorProp, ...rest }) => ({
   props: rest
 });
 
+export const shadow = (theme, { shadow: shadowProp, ...rest }) => ({
+  style: theme.shadows[shadowProp],
+  props: rest
+});
+
 export const fontSize = (theme, { fontSize: fontSizeProp, ...rest }) => ({
   style: { fontSize: theme.fontSizes[fontSizeProp] },
   props: rest
