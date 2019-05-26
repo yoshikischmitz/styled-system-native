@@ -14,3 +14,8 @@ import {
 export const Card = systemize(View, spaces, shadow, border, borderRadius);
 export const Box = systemize(View, spaces, border, borderRadius);
 export const Text = systemize(NativeText, color, fontSize, fontWeight);
+export const Span = systemize(NativeText, color, fontSize, fontWeight);
+
+Text.defaultProps = {
+  fontSize: 0
+};

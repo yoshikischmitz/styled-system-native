@@ -8,7 +8,7 @@
 
 import React, { Component } from "react";
 import { Platform, StyleSheet, View, Image } from "react-native";
-import { Box, Text, Card } from "./components";
+import { Box, Text, Span, Card } from "./components";
 import ThemeContext from "./theme-context";
 
 const theme = {
@@ -117,7 +117,7 @@ export default class App extends Component<Props> {
         <Box mh={2} mt={3}>
           <Card pa={2} shadow={1} style={{ backgroundColor: "white" }}>
             <Text fontSize={1} color="gray0">
-              Try "Paris"
+              Try <Span color="red">"Paris"</Span>
             </Text>
           </Card>
           <Box mt={2} style={{ flexDirection: "row" }}>

@@ -103,7 +103,6 @@ export const systemize = (Component, ...styleProviders) => {
   return ({ style: userStyle, ...rest }) => (
     <ThemeContext.Consumer>
       {theme => {
-        //return (theme = defaultTheme) => {
         // pipe the {style, props} object through each function
         // which each takes just the props it needs
         // the final object returned from reduce
