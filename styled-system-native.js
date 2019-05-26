@@ -99,7 +99,7 @@ export const spaces = (
   };
 };
 
-export const systemize = (Component, defaultStyle, ...styleProviders) => {
+export const systemize = (Component, ...styleProviders) => {
   return ({ style: userStyle, ...rest }) => (
     <ThemeContext.Consumer>
       {theme => {
@@ -119,9 +119,7 @@ export const systemize = (Component, defaultStyle, ...styleProviders) => {
           { style: {}, props: rest }
         );
 
-        return (
-          <Component style={[defaultStyle, style, userStyle]} {...props} />
-        );
+        return <Component style={[style, userStyle]} {...props} />;
       }}
     </ThemeContext.Consumer>
   );
