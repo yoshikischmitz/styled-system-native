@@ -24,6 +24,24 @@ export const color = (theme, { color: colorProp, ...rest }) => ({
   props: rest
 });
 
+export const fontWeight = (theme, { fontWeight: fontWeightProp, ...rest }) => ({
+  style: { fontWeight: theme.fontWeights[fontWeightProp] },
+  props: rest
+});
+
+export const borderRadius = (
+  theme,
+  { borderRadius: borderRadiusProp, ...rest }
+) => ({
+  style: { borderRadius: theme.borderRadii[borderRadiusProp] },
+  props: rest
+});
+
+export const border = (theme, { border: borderProp, ...rest }) => ({
+  style: theme.borders[borderProp],
+  props: rest
+});
+
 export const shadow = (theme, { shadow: shadowProp, ...rest }) => ({
   style: theme.shadows[shadowProp],
   props: rest
@@ -65,7 +83,8 @@ export const spaces = (
     style: {
       marginLeft: getSpace(theme, ml),
       marginTop: getSpace(theme, mt),
-      marginBottom: getSpace(theme, mr),
+      marginBottom: getSpace(theme, mb),
+      marginRight: getSpace(theme, mr),
       marginHorizontal: getSpace(theme, mh),
       marginVertical: getSpace(theme, mv),
       margin: getSpace(theme, ma),
@@ -80,7 +99,7 @@ export const spaces = (
   };
 };
 
-export const systemize = (Component, ...styleProviders) => {
+export const systemize = (Component, defaultStyle, ...styleProviders) => {
   return ({ style: userStyle, ...rest }) => (
     <ThemeContext.Consumer>
       {theme => {
@@ -100,9 +119,9 @@ export const systemize = (Component, ...styleProviders) => {
           { style: {}, props: rest }
         );
 
-        console.log(style, props);
-
-        return <Component style={[style, userStyle]} {...props} />;
+        return (
+          <Component style={[defaultStyle, style, userStyle]} {...props} />
+        );
       }}
     </ThemeContext.Consumer>
   );
