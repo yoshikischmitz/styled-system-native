@@ -13,43 +13,53 @@ const dimensionsSelect = breakPoints => {
   return breakPoints.length - 1;
 };
 
-export const color = (theme, { color: colorProp, ...rest }) => ({
-  style: {
-    color:
-      typeof colorProp === "object" && colorProp.constructor === Array
-        ? theme.colors[colorProp[dimensionsSelect(theme.breakPoints)]] ||
-          colorProp[dimensionsSelect(theme.breakPoints)]
-        : theme.colors[colorProp] || colorProp
-  },
-  props: rest
-});
+const makeProvider = ({ propName, themePath, exportObject }) => (
+  theme,
+  { [propName]: prop, ...rest }
+) => {
+  const isArray = typeof prop === "object" && prop.constructor === Array;
+  let style = {};
+
+  if (isArray) {
+    const breakPointIndex = dimensionsSelect(theme.breakPoints);
+    style = theme[themePath][breakPointIndex] || prop[breakPointIndex];
+  } else {
+    style = theme[themePath][prop] || prop;
+  }
+
+  return {
+    style: exportObject ? style : { [propName]: style },
+    props: rest
+  };
+};
+
+export const color = makeProvider({ propName: "color", themePath: "colors" });
 
 export const fontWeight = (theme, { fontWeight: fontWeightProp, ...rest }) => ({
   style: { fontWeight: theme.fontWeights[fontWeightProp] },
   props: rest
 });
 
-export const borderRadius = (
-  theme,
-  { borderRadius: borderRadiusProp, ...rest }
-) => ({
-  style: { borderRadius: theme.borderRadii[borderRadiusProp] },
-  props: rest
+export const borderRadius = makeProvider({
+  propName: "borderRadius",
+  themePath: "borderRadii"
 });
 
-export const border = (theme, { border: borderProp, ...rest }) => ({
-  style: theme.borders[borderProp],
-  props: rest
+export const border = makeProvider({
+  propName: "border",
+  themePath: "borders",
+  exportObject: true
 });
 
-export const shadow = (theme, { shadow: shadowProp, ...rest }) => ({
-  style: theme.shadows[shadowProp],
-  props: rest
+export const shadow = makeProvider({
+  propName: "shadow",
+  themePath: "shadows",
+  exportObject: true
 });
 
-export const fontSize = (theme, { fontSize: fontSizeProp, ...rest }) => ({
-  style: { fontSize: theme.fontSizes[fontSizeProp] },
-  props: rest
+export const fontSize = makeProvider({
+  propName: "fontSize",
+  themePath: "fontSizes"
 });
 
 const getSpace = (theme, index) =>
@@ -100,13 +110,13 @@ export const spaces = (
 };
 
 export const systemize = (Component, ...styleProviders) => {
+  // take the style prop so users can pass it in without
+  // overriding our styles, collect remaining styles
   return ({ style: userStyle, ...rest }) => (
     <ThemeContext.Consumer>
       {theme => {
-        // pipe the {style, props} object through each function
-        // which each takes just the props it needs
-        // the final object returned from reduce
-        // represents the total style and unused props
+        // pipe the {style, props} object through each function, where each function
+        // such that the final props object doesn't have any styled-system props
         const { style, props } = styleProviders.reduce(
           ({ style, props }, styleFn) => {
             const { style: newStyle, props: unusedProps } = styleFn(
@@ -118,6 +128,7 @@ export const systemize = (Component, ...styleProviders) => {
           { style: {}, props: rest }
         );
 
+        // let user override styles, forward remaining props to object
         return <Component style={[style, userStyle]} {...props} />;
       }}
     </ThemeContext.Consumer>
