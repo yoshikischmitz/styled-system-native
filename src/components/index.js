@@ -9,12 +9,14 @@ import {
   color,
   borderRadius,
   border
-} from "./styled-system-native";
+} from "styled-system-native";
 
 export const Card = systemize(View, spaces, shadow, border, borderRadius);
 export const Box = systemize(View, spaces, border, borderRadius);
-export const Text = systemize(NativeText, color, fontSize, fontWeight);
-export const Span = systemize(NativeText, color, fontSize, fontWeight);
+
+const textArgs = [NativeText, color, fontSize, fontWeight];
+export const Text = systemize(...textArgs);
+export const Span = systemize(...textArgs);
 
 Text.defaultProps = {
   fontSize: 0
