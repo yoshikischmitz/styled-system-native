@@ -125,11 +125,21 @@ export default class App extends Component<Props> {
                 What can we help you find, Yoshiki?
               </Text>
             </Box>
-            <Flex flexDirection="row">
-              {data.cards.map(({ title, image }) => (
-                <AirCard mr={2} key={title} title={title} image={image} />
-              ))}
-            </Flex>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={{
+                marginHorizontal: -16,
+                paddingLeft: 16,
+                overflow: "visible"
+              }}
+            >
+              <Flex flexDirection="row">
+                {data.cards.map(({ title, image }) => (
+                  <AirCard mr={2} key={title} title={title} image={image} />
+                ))}
+              </Flex>
+            </ScrollView>
             <Box mt={3}>
               <Text fontSize={4} fontWeight={2}>
                 Homes around the world
