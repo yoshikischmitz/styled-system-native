@@ -2,11 +2,11 @@ import React from "react";
 import { Dimensions } from "react-native";
 import ThemeContext from "./theme-context";
 
-const { width, height } = Dimensions.get("screen");
+const { width: screenWidth } = Dimensions.get("screen");
 
 const dimensionsSelect = breakPoints => {
   for (index in breakPoints) {
-    if (width < breakPoints[index]) {
+    if (screenWidth < breakPoints[index]) {
       return index;
     }
   }
@@ -81,6 +81,14 @@ export const fontSize = makeProvider({
 export const backgroundColor = makeProvider({
   propName: "backgroundColor",
   themePath: "colors"
+});
+
+export const width = makeProvider({
+  propName: "width"
+});
+
+export const height = makeProvider({
+  propName: "width"
 });
 
 export const spaces = (

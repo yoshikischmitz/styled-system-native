@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Platform, StyleSheet, View, Image } from "react-native";
+import { Platform, StyleSheet, ScrollView, Image } from "react-native";
 import { Box, Flex, Text, Span, Card } from "components";
 import theme from "./theme";
 import ThemeContext from "styled-system-native/theme-context";
@@ -25,6 +25,30 @@ const data = {
   homes: [
     {
       id: 0,
+      label: "CAVE CHANIA",
+      title: "Luxurious stone villa in Crete",
+      price: "$99 per night",
+      rating: 5,
+      ratingMessage: "superhost"
+    },
+    {
+      id: 1,
+      label: "CAVE CHANIA",
+      title: "Luxurious stone villa in Crete",
+      price: "$99 per night",
+      rating: 5,
+      ratingMessage: "superhost"
+    },
+    {
+      id: 2,
+      label: "CAVE CHANIA",
+      title: "Luxurious stone villa in Crete",
+      price: "$99 per night",
+      rating: 5,
+      ratingMessage: "superhost"
+    },
+    {
+      id: 3,
       label: "CAVE CHANIA",
       title: "Luxurious stone villa in Crete",
       price: "$99 per night",
@@ -59,7 +83,7 @@ function AirCard({ title, image, ...rest }) {
 }
 
 const HomeCard = ({ title, label, price, rating, ...rest }) => (
-  <Card border={0} style={{ flex: 1, minWidth: "50%" }} {...rest}>
+  <Card pa={1} border={0} style={{ flex: 1, minWidth: "50%" }} {...rest}>
     <Text color="red" fontSize={1}>
       {label}
     </Text>
@@ -89,47 +113,49 @@ export default class App extends Component<Props> {
   render() {
     return (
       <ThemeContext.Provider value={theme}>
-        <Box mh={2} mt={3}>
-          <Search pa={2} />
-          <Flex mt={2} flexDirection="row">
-            <Filter>Dates</Filter>
-            <Filter>Guests</Filter>
-          </Flex>
-          <Box mv={3}>
-            <Text fontSize={4} fontWeight={2}>
-              What can we help you find, Yoshiki?
-            </Text>
-          </Box>
-          <Flex flexDirection="row">
-            {data.cards.map(({ title, image }) => (
-              <AirCard mr={2} key={title} title={title} image={image} />
-            ))}
-          </Flex>
-          <Box mt={3}>
-            <Text fontSize={4} fontWeight={2}>
-              Homes around the world
-            </Text>
-            <Flex mh={-8} flexDirection="row" flexWrap="wrap">
-              {data.homes.map(
-                ({ id, label, title, price, rating, ratingMessage }) => (
-                  <HomeCard
-                    key={id}
-                    mt={1}
-                    mh={1}
-                    label="CAVE CHANIA"
-                    title="Luxurious stone villa in Crete"
-                    price="$99 per night"
-                    rating={
-                      <Text color="green">
-                        {rating} - {ratingMessage}
-                      </Text>
-                    }
-                  />
-                )
-              )}
+        <ScrollView>
+          <Box mh={2} mt={3}>
+            <Search pa={2} />
+            <Flex mt={2} flexDirection="row">
+              <Filter>Dates</Filter>
+              <Filter>Guests</Filter>
             </Flex>
+            <Box mv={3}>
+              <Text fontSize={4} fontWeight={2}>
+                What can we help you find, Yoshiki?
+              </Text>
+            </Box>
+            <Flex flexDirection="row">
+              {data.cards.map(({ title, image }) => (
+                <AirCard mr={2} key={title} title={title} image={image} />
+              ))}
+            </Flex>
+            <Box mt={3}>
+              <Text fontSize={4} fontWeight={2}>
+                Homes around the world
+              </Text>
+              <Flex mt={1} mh={-8} flexDirection="row" flexWrap="wrap">
+                {data.homes.map(
+                  ({ id, label, title, price, rating, ratingMessage }) => (
+                    <Box key={id} ph={1} mb={1} width="50%">
+                      <HomeCard
+                        mt={1}
+                        label={label}
+                        title={title}
+                        price={price}
+                        rating={
+                          <Text color="green">
+                            {rating} - {ratingMessage}
+                          </Text>
+                        }
+                      />
+                    </Box>
+                  )
+                )}
+              </Flex>
+            </Box>
           </Box>
-        </Box>
+        </ScrollView>
       </ThemeContext.Provider>
     );
   }

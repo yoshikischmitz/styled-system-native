@@ -3,6 +3,7 @@ import { Text as NativeText, View, Dimensions } from "react-native";
 import {
   systemize,
   spaces,
+  width,
   fontWeight,
   shadow,
   fontSize,
@@ -15,7 +16,7 @@ import {
   backgroundColor
 } from "styled-system-native";
 
-const boxArgs = [View, spaces];
+const boxArgs = [View, spaces, width];
 export const Card = systemize(
   ...boxArgs,
   backgroundColor,
