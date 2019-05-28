@@ -8,11 +8,23 @@ import {
   fontSize,
   color,
   borderRadius,
-  border
+  flexDirection,
+  flexWrap,
+  alignItems,
+  border,
+  backgroundColor
 } from "styled-system-native";
 
-export const Card = systemize(View, spaces, shadow, border, borderRadius);
-export const Box = systemize(View, spaces, border, borderRadius);
+const boxArgs = [View, spaces];
+export const Card = systemize(
+  ...boxArgs,
+  backgroundColor,
+  shadow,
+  border,
+  borderRadius
+);
+export const Box = systemize(...boxArgs);
+export const Flex = systemize(...boxArgs, flexDirection, alignItems, flexWrap);
 
 const textArgs = [NativeText, color, fontSize, fontWeight];
 export const Text = systemize(...textArgs);

@@ -13,20 +13,24 @@ const dimensionsSelect = breakPoints => {
   return breakPoints.length - 1;
 };
 
-const makeProvider = ({ propName, themePath, exportObject }) => (
-  theme,
-  { [propName]: prop, ...rest }
-) => {
+const getValueFromTheme = (themeValue = {}, prop) => {
   const isArray = typeof prop === "object" && prop.constructor === Array;
-  let style = {};
 
   if (isArray) {
     const breakPointIndex = dimensionsSelect(theme.breakPoints);
-    style = theme[themePath][breakPointIndex] || prop[breakPointIndex];
+    return themeValue[breakPointIndex] || prop[breakPointIndex];
   } else {
-    style = theme[themePath][prop] || prop;
+    return themeValue[prop] || prop;
   }
+};
 
+// returns a function that builds a style value from the theme and the user props:
+const makeProvider = ({
+  propName, // name of the prop to be passed in, e.g.: `fontSize` or `color` */
+  themePath, // path into the theme object to access the style value for the prop
+  exportObject // used for style values like shadow which have multiple style attributes
+}) => (theme, { [propName]: prop, ...rest }) => {
+  const style = getValueFromTheme(theme[themePath], prop);
   return {
     style: exportObject ? style : { [propName]: style },
     props: rest
@@ -35,9 +39,21 @@ const makeProvider = ({ propName, themePath, exportObject }) => (
 
 export const color = makeProvider({ propName: "color", themePath: "colors" });
 
-export const fontWeight = (theme, { fontWeight: fontWeightProp, ...rest }) => ({
-  style: { fontWeight: theme.fontWeights[fontWeightProp] },
-  props: rest
+export const flexDirection = makeProvider({
+  propName: "flexDirection"
+});
+
+export const alignItems = makeProvider({
+  propName: "alignItems"
+});
+
+export const flexWrap = makeProvider({
+  propName: "flexWrap"
+});
+
+export const fontWeight = makeProvider({
+  propName: "fontWeight",
+  themePath: "fontWeights"
 });
 
 export const borderRadius = makeProvider({
@@ -62,10 +78,10 @@ export const fontSize = makeProvider({
   themePath: "fontSizes"
 });
 
-const getSpace = (theme, index) =>
-  typeof index === "object" && index.constructor === Array
-    ? theme.spaces[index[dimensionsSelect(theme.breakPoints)]]
-    : theme.spaces[index] || index;
+export const backgroundColor = makeProvider({
+  propName: "backgroundColor",
+  themePath: "colors"
+});
 
 export const spaces = (
   theme,
@@ -89,21 +105,22 @@ export const spaces = (
     ...rest
   }
 ) => {
+  const themeSpaces = theme.spaces;
   return {
     style: {
-      marginLeft: getSpace(theme, ml),
-      marginTop: getSpace(theme, mt),
-      marginBottom: getSpace(theme, mb),
-      marginRight: getSpace(theme, mr),
-      marginHorizontal: getSpace(theme, mh),
-      marginVertical: getSpace(theme, mv),
-      margin: getSpace(theme, ma),
-      paddingLeft: getSpace(theme, pl),
-      paddingTop: getSpace(theme, pt),
-      paddingBottom: getSpace(theme, pr),
-      paddingHorizontal: getSpace(theme, ph),
-      paddingVertical: getSpace(theme, pv),
-      padding: getSpace(theme, pa)
+      marginLeft: getValueFromTheme(themeSpaces, ml),
+      marginTop: getValueFromTheme(themeSpaces, mt),
+      marginBottom: getValueFromTheme(themeSpaces, mb),
+      marginRight: getValueFromTheme(themeSpaces, mr),
+      marginHorizontal: getValueFromTheme(themeSpaces, mh),
+      marginVertical: getValueFromTheme(themeSpaces, mv),
+      margin: getValueFromTheme(themeSpaces, ma),
+      paddingLeft: getValueFromTheme(themeSpaces, pl),
+      paddingTop: getValueFromTheme(themeSpaces, pt),
+      paddingBottom: getValueFromTheme(themeSpaces, pr),
+      paddingHorizontal: getValueFromTheme(themeSpaces, ph),
+      paddingVertical: getValueFromTheme(themeSpaces, pv),
+      padding: getValueFromTheme(themeSpaces, pa)
     },
     props: rest
   };
