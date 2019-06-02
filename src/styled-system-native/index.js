@@ -2,6 +2,8 @@ import React from "react";
 import { Dimensions } from "react-native";
 import ThemeContext from "./theme-context";
 
+const spaceScale = [0, 4, 8, 16, 32, 64, 128, 256, 512];
+
 const { width: screenWidth } = Dimensions.get("screen");
 
 const dimensionsSelect = breakPoints => {
@@ -13,14 +15,24 @@ const dimensionsSelect = breakPoints => {
   return breakPoints.length - 1;
 };
 
-const getValueFromTheme = (themeValue = {}, prop) => {
+const getValueFromTheme = (themeObj = {}, prop) => {
   const isArray = typeof prop === "object" && prop.constructor === Array;
 
   if (isArray) {
     const breakPointIndex = dimensionsSelect(theme.breakPoints);
-    return themeValue[breakPointIndex] || prop[breakPointIndex];
+    const themeValue = themeObj[breakPointIndex];
+    return themeObj[breakPointIndex] || prop[breakPointIndex];
   } else {
-    return themeValue[prop] || prop;
+    let themeValue;
+    if (prop < 0) {
+      themeValue = themeObj[prop * -1];
+      if (themeValue) {
+        return themeValue * -1;
+      }
+    } else {
+      themeValue = themeObj[prop];
+    }
+    return themeValue || prop;
   }
 };
 
@@ -28,9 +40,10 @@ const getValueFromTheme = (themeValue = {}, prop) => {
 const makeProvider = ({
   propName, // name of the prop to be passed in, e.g.: `fontSize` or `color` */
   themePath, // path into the theme object to access the style value for the prop
-  exportObject // used for style values like shadow which have multiple style attributes
+  exportObject, // used for style values like shadow which have multiple style attributes
+  defaultScale
 }) => (theme, { [propName]: prop, ...rest }) => {
-  const style = getValueFromTheme(theme[themePath], prop);
+  const style = getValueFromTheme(theme[themePath] || defaultScale, prop);
   return {
     style: exportObject ? style : { [propName]: style },
     props: rest
@@ -45,6 +58,10 @@ export const flexDirection = makeProvider({
 
 export const alignItems = makeProvider({
   propName: "alignItems"
+});
+
+export const justifyContent = makeProvider({
+  propName: "justifyContent"
 });
 
 export const flexWrap = makeProvider({
@@ -75,7 +92,8 @@ export const shadow = makeProvider({
 
 export const fontSize = makeProvider({
   propName: "fontSize",
-  themePath: "fontSizes"
+  themePath: "fontSizes",
+  defaultScale: [12, 14, 16, 20, 24, 32, 48, 64, 72]
 });
 
 export const backgroundColor = makeProvider({
@@ -113,7 +131,7 @@ export const spaces = (
     ...rest
   }
 ) => {
-  const themeSpaces = theme.spaces;
+  const themeSpaces = theme.spaces || spaceScale;
   return {
     style: {
       marginLeft: getValueFromTheme(themeSpaces, ml),

@@ -13,8 +13,7 @@ const data = {
     },
     {
       title: "Experiences",
-      image:
-        "https://cdn.vox-cdn.com/thumbor/CTluvlc9kScZlylzsRR4QRCE4Gg=/6x0:641x423/1200x800/filters:focal(6x0:641x423)/cdn.vox-cdn.com/uploads/chorus_image/image/48767301/Screen_Shot_2016-02-09_at_9.08.28_AM.0.0.png"
+      image: "https://i.imgur.com/xjtbkzV.jpg"
     },
     {
       title: "Resorts",
@@ -67,7 +66,7 @@ function AirCard({ title, image, ...rest }) {
     <Card
       shadow={0}
       borderRadius={0}
-      border={2}
+      border={1}
       backgroundColor="backgroundColor"
       {...rest}
     >
@@ -143,12 +142,10 @@ export default class App extends Component<Props> {
               horizontal
               showsHorizontalScrollIndicator={false}
               style={{
-                marginHorizontal: -16,
-                paddingLeft: 16,
                 overflow: "visible"
               }}
             >
-              <Flex flexDirection="row">
+              <Flex flexDirection="row" mh={-2} pl={2}>
                 {data.cards.map(({ title, image }) => (
                   <AirCard mr={2} key={title} title={title} image={image} />
                 ))}
@@ -158,7 +155,7 @@ export default class App extends Component<Props> {
               <Text fontSize={4} fontWeight={2}>
                 Homes around the world
               </Text>
-              <Flex mt={1} mh={-8} flexDirection="row" flexWrap="wrap">
+              <Flex mt={1} mh={-1} flexDirection="row" flexWrap="wrap">
                 {data.homes.map(
                   ({
                     id,
