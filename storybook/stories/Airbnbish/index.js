@@ -112,7 +112,7 @@ const HomeCard = ({ title, label, price, rating, image, ...rest }) => (
 const Search = props => (
   <Card shadow={1} backgroundColor="backgroundColor" {...props}>
     <Text fontSize={1} color="gray0">
-      Try <Span color="red">"Paris"</Span>
+      Try "Paris"
     </Text>
   </Card>
 );
