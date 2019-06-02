@@ -125,7 +125,8 @@ export const spaces = (
       margin: getValueFromTheme(themeSpaces, ma),
       paddingLeft: getValueFromTheme(themeSpaces, pl),
       paddingTop: getValueFromTheme(themeSpaces, pt),
-      paddingBottom: getValueFromTheme(themeSpaces, pr),
+      paddingBottom: getValueFromTheme(themeSpaces, pb),
+      paddingRight: getValueFromTheme(themeSpaces, pr),
       paddingHorizontal: getValueFromTheme(themeSpaces, ph),
       paddingVertical: getValueFromTheme(themeSpaces, pv),
       padding: getValueFromTheme(themeSpaces, pa)
