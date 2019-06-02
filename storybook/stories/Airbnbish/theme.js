@@ -22,11 +22,11 @@ const theme = {
     {
       elevation: 1,
       shadowColor: "black",
-      shadowOpacity: 0.3,
-      shadowRadius: 3,
+      shadowOpacity: 0.15,
+      shadowRadius: 4,
       shadowOffset: {
         width: 0,
-        height: 2
+        height: 3
       }
     },
     {
@@ -36,17 +36,7 @@ const theme = {
       shadowRadius: 8,
       shadowOffset: {
         width: 0,
-        height: 5
-      }
-    },
-    {
-      elevation: 5,
-      shadowColor: "black",
-      shadowOpacity: 0.14,
-      shadowRadius: 20,
-      shadowOffset: {
-        width: 0,
-        height: 10
+        height: 2
       }
     }
   ],

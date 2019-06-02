@@ -25,35 +25,39 @@ const data = {
   homes: [
     {
       id: 0,
-      label: "CAVE CHANIA",
-      title: "Luxurious stone villa in Crete",
-      price: "$99 per night",
-      rating: 5,
-      ratingMessage: "superhost"
+      label: "entire apartment",
+      title: "Luxurious Apartment in City",
+      price: "$125 per night",
+      rating: "★★★★★",
+      ratingMessage: "superhost",
+      image: "https://i.imgur.com/6oD3BKN.jpg"
     },
     {
       id: 1,
-      label: "CAVE CHANIA",
-      title: "Luxurious stone villa in Crete",
-      price: "$99 per night",
-      rating: 5,
-      ratingMessage: "superhost"
+      label: "medieval dwelling",
+      title: "#4 Monastic Chamber",
+      price: "$44 per night",
+      rating: "★★★★★",
+      ratingMessage: "superhost",
+      image: "https://i.imgur.com/I0dLxPP.jpg"
     },
     {
       id: 2,
-      label: "CAVE CHANIA",
-      title: "Luxurious stone villa in Crete",
-      price: "$99 per night",
-      rating: 5,
-      ratingMessage: "superhost"
+      label: "entire tent",
+      title: "Mountaintop tent with a view!",
+      price: "$109 per night",
+      rating: "★★★★★",
+      ratingMessage: "superhost",
+      image: "https://i.imgur.com/E1Pn0Mk.jpg"
     },
     {
       id: 3,
-      label: "CAVE CHANIA",
-      title: "Luxurious stone villa in Crete",
-      price: "$99 per night",
-      rating: 5,
-      ratingMessage: "superhost"
+      label: "basement",
+      title: "Rustic boiler room",
+      price: "$5 per night",
+      rating: "★★★★★",
+      ratingMessage: "superhost",
+      image: "https://i.imgur.com/4rm98Ii.jpg"
     }
   ]
 };
@@ -61,7 +65,7 @@ const data = {
 function AirCard({ title, image, ...rest }) {
   return (
     <Card
-      shadow={1}
+      shadow={0}
       borderRadius={0}
       border={2}
       backgroundColor="backgroundColor"
@@ -82,15 +86,25 @@ function AirCard({ title, image, ...rest }) {
   );
 }
 
-const HomeCard = ({ title, label, price, rating, ...rest }) => (
-  <Card pa={1} border={0} style={{ flex: 1, minWidth: "50%" }} {...rest}>
-    <Text color="red" fontSize={1}>
-      {label}
-    </Text>
-    <Box mv={1}>
-      <Text fontSize={2}>{title}</Text>
+const HomeCard = ({ title, label, price, rating, image, ...rest }) => (
+  <Card style={{ flex: 1, minWidth: "50%" }} {...rest}>
+    <Image
+      source={{ uri: image }}
+      style={{ width: "100%", height: 100, borderRadius: 2 }}
+    />
+    <Box mv={0}>
+      <Text color="red" fontSize={0}>
+        {label.toUpperCase()}
+      </Text>
     </Box>
-    <Text fontSize={2}>{price}</Text>
+    <Box mb={1}>
+      <Text fontSize={1} fontWeight={1}>
+        {title}
+      </Text>
+    </Box>
+    <Box mb={0}>
+      <Text fontSize={0}>{price}</Text>
+    </Box>
     <Text fontSize={0}>{rating}</Text>
   </Card>
 );
@@ -103,8 +117,8 @@ const Search = props => (
   </Card>
 );
 
-const Filter = ({ children }) => (
-  <Card mr={1} pa={1} border={0} borderRadius={0}>
+const Filter = ({ children, ...props }) => (
+  <Card pa={1} border={0} borderRadius={0} {...props}>
     <Text>{children}</Text>
   </Card>
 );
@@ -117,7 +131,7 @@ export default class App extends Component<Props> {
           <Box mh={2} mt={3}>
             <Search pa={2} />
             <Flex mt={2} flexDirection="row">
-              <Filter>Dates</Filter>
+              <Filter mr={1}>Dates</Filter>
               <Filter>Guests</Filter>
             </Flex>
             <Box mv={3}>
@@ -146,16 +160,25 @@ export default class App extends Component<Props> {
               </Text>
               <Flex mt={1} mh={-8} flexDirection="row" flexWrap="wrap">
                 {data.homes.map(
-                  ({ id, label, title, price, rating, ratingMessage }) => (
+                  ({
+                    id,
+                    label,
+                    image,
+                    title,
+                    price,
+                    rating,
+                    ratingMessage
+                  }) => (
                     <Box key={id} ph={1} mb={1} width="50%">
                       <HomeCard
                         mt={1}
                         label={label}
                         title={title}
                         price={price}
+                        image={image}
                         rating={
                           <Text color="green">
-                            {rating} - {ratingMessage}
+                            {rating} · {ratingMessage}
                           </Text>
                         }
                       />
